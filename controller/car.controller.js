@@ -24,18 +24,17 @@ carController.createCar = async (req, res, next) => {
 //Read
 carController.getAllCars = async (req, res, next) => {
     try {
-
         const { query } = req
         const page = query.page
         let limit = 10;
 
-        if (page < 0) {
-            const error = new Error("Page must be greater than zero")
-            error.statusCode = 401
-            error.isOperational = true;
-            error.errorType = "User Error"
-            throw error
-        }
+        // if (page < 0) {
+        //     const error = new Error("Page must be greater than zero")
+        //     error.statusCode = 401
+        //     error.isOperational = true;
+        //     error.errorType = "User Error"
+        //     throw error
+        // }
 
         const filter = {}
         let elements = await Car.find(filter).limit(limit).skip(limit * (page - 1))
@@ -43,9 +42,7 @@ carController.getAllCars = async (req, res, next) => {
         let totalPages = Math.ceil(totalElements / limit)
         const respone = { data: { cars: elements, total: totalPages } }
         res.status(200).send(respone)
-        // console.log(query)
 
-        // console.log(total.length)
     } catch (error) {
         next(error)
     }
